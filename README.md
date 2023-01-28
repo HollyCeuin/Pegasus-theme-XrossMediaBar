@@ -3,5 +3,7 @@ I've edited the favorite text to say favourite (nitpick I know), removed the yea
 
 This may not work on anything not on a 1920x1080 screen - I made these edits specifically for my AYN Odin Pro, it should work on both that and the base model, maybe even the Lite, but ymmv.
 
+Massive thanks to Lx-Dm, I'd been waiting for an XMB theme for a while but didn't have the knowledge to make it, only to do these tweaks.
+
 
 ![Screenshot_1](https://github.com/HollyCeuin/Pegasus-theme-XrossMediaBar/blob/main/.meta/screenshot.png?raw=true)
