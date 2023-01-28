@@ -122,17 +122,17 @@ FocusScope {
         id: sysTime
 
         function set() {
-            sysTime.text = Qt.formatDateTime(new Date(), "d/MM/yyyy hh:mm")
+            sysTime.text = Qt.formatDateTime(new Date(), "d/MM/yyyy h:mm AP")
         }
 		
 		anchors {
-			right: parent.right; rightMargin: vpx(40)
+			right: parent.right; rightMargin: vpx(120)
             top: parent.top; topMargin: vpx(28)
         }
 		
         Timer {
             id: textTimer
-            interval: 60000 // Run the timer every minute
+            interval: 1000 // Run the timer every second
             repeat: true
             running: true
             triggeredOnStart: true
@@ -143,6 +143,88 @@ FocusScope {
 		font.family: generalFont.name
 		font.pointSize: 22
     }
+		
+	//battery
+	Item {
+    // border
+    Rectangle {
+        id: batteryBorder;
+		x: 1790
+		y: 53
+        height: 38;
+        width: 61;
+        radius: 1.5;
+        color: 'transparent';
+		border.color: "white";
+        border.width: 3;
+        
+    }
+
+		
+    // fill 1
+    Rectangle {
+		id: fill1
+        color: white;
+		x: 1797
+		y: 59
+        width: 13
+        height: 25
+        radius: 1.1
+		visible: if (api.device.batteryPercent*100 > 66)
+		{visible: true}
+		else
+		{visible: false}		
+        }
+		
+	// fill 2
+	 Rectangle {
+        color: white;
+		x: 1814
+		y: 59
+        width: 13
+        height: 25
+        radius: 1.1
+		visible: if (api.device.batteryPercent*100 > 33)
+		{visible: true}
+		else
+		{visible: false}
+        }
+	
+	// fill 3
+	 Rectangle {
+		x: 1831
+		y: 59
+		width: 13
+		height: 25
+		radius: 1.1
+		color: if (api.device.batteryPercent*100 < 16)
+		{color: white}
+		else
+		{color: red}
+		}
+		
+	// nub
+		Rectangle {
+		color: white;
+		x: 1784
+		y: 65
+		width: 8
+		height: 14
+		radius: 1.5
+		
+		}
+    
+    // button
+    Rectangle {
+        height: parent.height * .42;
+        width: parent.height * .14;
+        radius: width;
+        color: white;
+		}
+		
+
+	
+}
 
 	CollectionBar {
 		id: collectionBar
@@ -175,7 +257,7 @@ FocusScope {
 		//	focus = false;
 		//}
 	}
-
+	
 	GameDetails {
 		id: gameDetails
 		//opacity: focus ? 1.0 : 0.0
@@ -200,6 +282,7 @@ FocusScope {
 		if (api.keys.isDetails(event) && !event.isAutoRepeat) {
 			event.accepted = true;
 			itemBar.focus ? itemBar.focus = false : itemBar.focus = true
+			navSfx.play()
 		}
 		if (api.keys.isNextPage(event)) {
 			event.accepted = true;
@@ -214,11 +297,11 @@ FocusScope {
 	SoundEffect {
         id: navSfx
         source: "assets/audio/nav.wav"
-        volume: 0.25
+        volume: 1
     }
 	SoundEffect {
         id: backSfx
         source: "assets/audio/back.wav"
-        volume: 0.25
+        volume: 1
     }
 }
