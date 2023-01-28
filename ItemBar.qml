@@ -237,8 +237,11 @@ FocusScope {
 					//gameDetails.focus = true;
 					//settings();
 					root.focus = false
+					navSfx.play()
 				} else {
 					root.currentItem.launch();
+					navSfx.play();
+					
 				}
 			}
 		}
