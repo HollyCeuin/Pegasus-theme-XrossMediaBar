@@ -122,7 +122,7 @@ FocusScope {
         id: sysTime
 
         function set() {
-            sysTime.text = Qt.formatDateTime(new Date(), "d/MM/yyyy h:mm AP")
+            sysTime.text = Qt.formatDateTime(new Date(), "d/MM h:mm AP")
         }
 		
 		anchors {
