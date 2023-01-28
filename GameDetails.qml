@@ -21,10 +21,10 @@ id: root
 		//	if (collectionIdx > -3) {
 		//		if (currentGame.favorite) {
 		//			detailedListModel.get(1).tile = "assets/icons/favorite.png";
-		//			detailedListModel.get(1).description = "Mark as unfavorite";
+		//			detailedListModel.get(1).description = "Mark as unfavourite";
 		//		} else {
 		//			detailedListModel.get(1).tile = "assets/icons/unfavorite.png";
-		//			detailedListModel.get(1).description = "Mark as favorite";
+		//			detailedListModel.get(1).description = "Mark as favourite";
 		//		}
 				//detailedAxis.model = detailedListModel;
 		//	} else {
@@ -38,11 +38,6 @@ id: root
     onFocusChanged: {
 		if (focus) {
 			introAnim.restart();
-			if (collectionIdx > -3) {
-				detailedAxis.model.get(1).tile = currentGame.favorite ? "assets/icons/favorite.png" : "assets/icons/unfavorite.png";
-				detailedAxis.model.get(1).description = currentGame.favorite ? "Mark as unfavorite" : "Mark as favorite";
-				detailedAxis.currentIndex = 0;
-			}			
 		} else {
 			introAnim.stop();
 			detailed.opacity = 0;
@@ -59,8 +54,8 @@ id: root
             type: "setting"
         });
         append({
-            title: "Favorite",
-			description: "Mark as favorite",
+            title: "Favourite",
+			description: "Mark as favourite",
 			tile: "assets/icons/favorite.png",
 			type: "setting"
         });
@@ -150,9 +145,17 @@ id: root
 		
 		
 		
-			Keys.onLeftPressed: { 
+
+			Keys.onUpPressed: { 
 				event.accepted = true;
-				exit();
+				navSfx.play();
+				decrementCurrentIndex();
+			}
+		
+			Keys.onDownPressed: { 
+				event.accepted = true;
+				navSfx.play();
+				incrementCurrentIndex();
 			}
 		}
 	
@@ -262,7 +265,7 @@ id: root
 		Text {
 		id: descriptionText
 			anchors {
-				left: parent.left; leftMargin: vpx(350)
+					left: parent.left; leftMargin: vpx(350)
 				right: parent.right;
 				top: parent.top; topMargin: vpx(250)
 				bottom: parent.bottom; bottomMargin: vpx(100)
@@ -305,6 +308,7 @@ id: root
 					if (currentGame.title == "Background") api.memory.set("Background", detailedAxis.currentIndex);
 					if (currentGame.title == "Icon Source") api.memory.set("Icon Source", detailedAxis.currentIndex);
 				}
+				navSfx.play()
 			}
 			if (api.keys.isCancel(event)){
 				event.accepted = true;
