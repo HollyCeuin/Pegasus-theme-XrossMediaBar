@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.1
 import QtGraphicalEffects 1.15
 import "Lists"
 import "utils.js" as Utils
+import QtMultimedia 5.9
 
 FocusScope {
 	id: root
@@ -38,13 +39,13 @@ FocusScope {
                 //"background":   "assets/background/xmb-wave-2.jpg"
             })
 			append({
-                "name":         "Favorites", 
+                "name":         "Favourites", 
                 "idx":          -2, 
                 "icon":         "assets/icons/favorites.png"//,
                 //"background":   "assets/background/xmb-wave-2.jpg"
             })
             append({
-                "name":         "Recent Played", 
+                "name":         "Recently Played", 
                 "idx":          -1, 
                 "icon":         "assets/icons/history.png"//,
                 //"background":   "assets/background/xmb-wave-2.jpg"
