@@ -197,10 +197,10 @@ FocusScope {
 		width: 13
 		height: 25
 		radius: 1.1
-		color: if (api.device.batteryPercent*100 < 16)
-		{color: white}
+		color: if (api.device.batteryPercent*100 > 15)
+		{color: "white"}
 		else
-		{color: red}
+		{color: "red"}
 		}
 		
 	// nub
