@@ -307,6 +307,7 @@ id: root
 				} else if (collectionIdx == -3 ) {
 					if (currentGame.title == "Background") api.memory.set("Background", detailedAxis.currentIndex);
 					if (currentGame.title == "Icon Source") api.memory.set("Icon Source", detailedAxis.currentIndex);
+					if (currentGame.title == "Video Background") api.memory.set("Video Background", detailedAxis.currentIndex);
 				}
 				navSfx.play()
 			}
