@@ -1,7 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.1
 //import QtGraphicalEffects 1.15
-import QtMultimedia 5.9
+import QtMultimedia 5.15
 import "Lists"
 import "utils.js" as Utils
 
@@ -12,7 +12,8 @@ FocusScope {
 	property var settings: {
         return {
             background:         	api.memory.has("Background") ? "assets/background/xmb-wave-" + api.memory.get("Background") + ".jpg" : "assets/background/xmb-wave-1.jpg",
-            iconSource:             api.memory.has("Icon Source") ? api.memory.get("Icon Source") : "0"
+            iconSource:             api.memory.has("Icon Source") ? api.memory.get("Icon Source") : "0",
+			videoBackground:		api.memory.has("Video Background") ? api.memory.get("Video Background") : "0"
         }
     }
 	
@@ -89,16 +90,41 @@ FocusScope {
             asynchronous: true
             //visible: collectionAxis.currentIndex >= 2
         }
+		
+		
 
-        Image {
-        id: blurBG
 
-            anchors.fill: parent
+
+    }
+	Item {
+			Video {
+			id: videobg
+			x: 0
+			y: 0
+			width: 1920
+			height: 1080
+			source: "assets/video/psp.mp4"
+			autoPlay: true
+			loops: MediaPlayer.Infinite
+		}
+		visible: { if (settings.videoBackground == 0) {visible: true}
+		else {
+			if (settings.videoBackground == 1) {visible: false}
+			}
+		}
+	}
+		        
+	Item {			
+			Image {
+			id: blurBG
             source: "assets/background/blurbg.png"
-            sourceSize: Qt.size(parent.width, parent.height)
+            x: 0
+			y: 0
+			width: 1920
+			height: 1080
             opacity: 0.9
         }
-    }
+		}
 	
 	Text {
 		id: currentCategory
