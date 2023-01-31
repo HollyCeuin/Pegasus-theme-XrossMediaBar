@@ -78,6 +78,16 @@ FocusScope {
 				{ title: "BoxFront", tile: "assets/icons/subsetting.png" }
             ]
         });
+		append({
+			title: "Video Background",
+			description: "Enable wave video background",
+			assets: {tile: "assets/icons/setting.png"}, // background: settings.background },
+			options: [
+				{ title: "Yes", tile: "assets/icons/subsetting.png" },
+				{ title: "No", tile: "assets/icons/subsetting.png" },
+			]
+		});
+			
         //append({
         //    title: "Image 3",
 		//	description: "Option description",
