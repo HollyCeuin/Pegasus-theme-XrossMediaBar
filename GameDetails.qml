@@ -276,7 +276,7 @@ id: root
 			color: "white"
 					
 			font.family: generalFont.name
-			font.pointSize: 22
+			font.pointSize: 16
 		
 			wrapMode: Text.WordWrap
 						
@@ -308,6 +308,7 @@ id: root
 					if (currentGame.title == "Background") api.memory.set("Background", detailedAxis.currentIndex);
 					if (currentGame.title == "Icon Source") api.memory.set("Icon Source", detailedAxis.currentIndex);
 					if (currentGame.title == "Video Background") api.memory.set("Video Background", detailedAxis.currentIndex);
+					if (currentGame.title == "12/24 Hour Clock") api.memory.set("12/24 Hour Clock", detailedAxis.currentIndex);
 				}
 				navSfx.play()
 			}
