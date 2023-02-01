@@ -13,7 +13,8 @@ FocusScope {
         return {
             background:         	api.memory.has("Background") ? "assets/background/xmb-wave-" + api.memory.get("Background") + ".jpg" : "assets/background/xmb-wave-1.jpg",
             iconSource:             api.memory.has("Icon Source") ? api.memory.get("Icon Source") : "0",
-			videoBackground:		api.memory.has("Video Background") ? api.memory.get("Video Background") : "0"
+			videoBackground:		api.memory.has("Video Background") ? api.memory.get("Video Background") : "0",
+			hourClock:				api.memory.has("12/24 Hour Clock") ? api.memory.get("12/24 Hour Clock") : "0"
         }
     }
 	
@@ -147,9 +148,14 @@ FocusScope {
 	Text {
         id: sysTime
 
-        function set() {
+       function set() { if (settings.hourClock == 0) {
             sysTime.text = Qt.formatDateTime(new Date(), "d/MM h:mm AP")
-        }
+        } else {
+			if (settings.hourClock == 1) {
+			sysTime.text = Qt.formatDateTime(new Date(), "d/MM hh:mm")
+			}
+		}
+	}
 		
 		anchors {
 			right: parent.right; rightMargin: vpx(120)
@@ -169,6 +175,7 @@ FocusScope {
 		font.family: generalFont.name
 		font.pointSize: 22
     }
+	
 		
 	//battery
 	Item {
