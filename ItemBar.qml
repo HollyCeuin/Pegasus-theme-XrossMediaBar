@@ -55,7 +55,7 @@ FocusScope {
         append({
             title: "Background",
 			description: "Default background",
-            assets: { tile: "assets/icons/setting.png"}, // background: settings.background },
+            assets: { tile: "assets/icons/background.png"}, // background: settings.background },
 			options: [
 				{ title: "xmb-wave-0", tile: "assets/icons/subsetting.png" },
                 { title: "xmb-wave-1", tile: "assets/icons/subsetting.png" },
@@ -70,7 +70,7 @@ FocusScope {
         append({
             title: "Icon Source",
 			description: "Select icon source",
-            assets: { tile: "assets/icons/setting.png"}, // background: settings.background },
+            assets: { tile: "assets/icons/icon.png"}, // background: settings.background },
 			options: [
                 { title: "Tile", tile: "assets/icons/subsetting.png" },
                 { title: "Logo", tile: "assets/icons/subsetting.png" },
@@ -81,13 +81,21 @@ FocusScope {
 		append({
 			title: "Video Background",
 			description: "Enable wave video background",
-			assets: {tile: "assets/icons/setting.png"}, // background: settings.background },
+			assets: {tile: "assets/icons/videobackground.png"}, // background: settings.background },
 			options: [
 				{ title: "Yes", tile: "assets/icons/subsetting.png" },
 				{ title: "No", tile: "assets/icons/subsetting.png" },
 			]
 		});
-			
+		append({
+			title: "12/24 Hour Clock",
+			description: "Choose clock format",
+			assets: {tile: "assets/icons/clock.png"}, // background: settings.background },
+			options: [
+				{ title: "12 hour", tile: "assets/icons/subsetting.png" },
+				{ title: "24 hour", tile: "assets/icons/subsetting.png" },
+			]
+		});
         //append({
         //    title: "Image 3",
 		//	description: "Option description",
