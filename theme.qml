@@ -14,7 +14,8 @@ FocusScope {
             background:         	api.memory.has("Background") ? "assets/background/xmb-wave-" + api.memory.get("Background") + ".jpg" : "assets/background/xmb-wave-1.jpg",
             iconSource:             api.memory.has("Icon Source") ? api.memory.get("Icon Source") : "0",
 			videoBackground:		api.memory.has("Video Background") ? api.memory.get("Video Background") : "0",
-			hourClock:				api.memory.has("12/24 Hour Clock") ? api.memory.get("12/24 Hour Clock") : "0"
+			hourClock:				api.memory.has("12/24 Hour Clock") ? api.memory.get("12/24 Hour Clock") : "0",
+			language:				api.memory.has("Language") ? api.memory.get("Language") : "0"
         }
     }
 	
