@@ -38,12 +38,24 @@ FocusScope {
                 "icon":         "assets/icons/settings.png"//,
                 //"background":   "assets/background/xmb-wave-2.jpg"
             })
+			{ if (settings.language == 0) {
 			append({
                 "name":         "Favourites", 
                 "idx":          -2, 
                 "icon":         "assets/icons/favorites.png"//,
                 //"background":   "assets/background/xmb-wave-2.jpg"
             })
+			} else {
+			if (settings.language == 1) {
+			append({
+				"name":			"Favorites",
+				"idx":			-2,
+				"icon":			"assets/icons/favorites.png"//,
+				//"background":	"assets/background/xmb-wave-2.jpg"
+			})
+			}
+		}
+	}
             append({
                 "name":         "Recently Played", 
                 "idx":          -1, 
