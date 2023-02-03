@@ -96,6 +96,15 @@ FocusScope {
 				{ title: "24 hour", tile: "assets/icons/subsetting.png" },
 			]
 		});
+		append({
+			title: "Language",
+			description: "Choose text language",
+			assets: {tile: "assets/icons/language.png"}, // background: settings.background },
+			options: [
+				{ title: "UK English", tile: "assets/icons/ukflag.png" },
+				{ title: "US English", tile: "assets/icons/usflag.png" },
+				]
+		});
         //append({
         //    title: "Image 3",
 		//	description: "Option description",
