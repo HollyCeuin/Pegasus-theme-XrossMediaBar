@@ -53,12 +53,24 @@ id: root
 			tile: "assets/icons/run.png",
             type: "setting"
         });
+		{ if (settings.language == 0) {
         append({
             title: "Favourite",
 			description: "Mark as favourite",
 			tile: "assets/icons/favorite.png",
 			type: "setting"
         });
+		} else {
+		if (settings.language == 1) {
+		append({
+			title: "Favorite",
+			description: "Mark as favorite",
+			tile: "assets/icons/favorite.png",
+			type: "setting"
+		});
+		}
+		}
+		}
     }
     }
 	
@@ -309,6 +321,7 @@ id: root
 					if (currentGame.title == "Icon Source") api.memory.set("Icon Source", detailedAxis.currentIndex);
 					if (currentGame.title == "Video Background") api.memory.set("Video Background", detailedAxis.currentIndex);
 					if (currentGame.title == "12/24 Hour Clock") api.memory.set("12/24 Hour Clock", detailedAxis.currentIndex);
+					if (currentGame.title == "Language") api.memory.set("Language", detailedAxis.currentIndex);
 				}
 				navSfx.play()
 			}
