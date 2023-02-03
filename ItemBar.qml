@@ -98,7 +98,7 @@ FocusScope {
 		});
 		append({
 			title: "Language",
-			description: "Choose text language",
+			description: "This option requires a restart of Pegasus",
 			assets: {tile: "assets/icons/language.png"}, // background: settings.background },
 			options: [
 				{ title: "UK English", tile: "assets/icons/ukflag.png" },
