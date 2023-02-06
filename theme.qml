@@ -109,9 +109,12 @@ FocusScope {
 			autoPlay: true
 			loops: MediaPlayer.Infinite
 		}
-		visible: { if (settings.videoBackground == 0) {visible: true}
-		else {
-			if (settings.videoBackground == 1) {visible: false}
+		visible: { if (collectionBar.currentCollection.idx == -3) {visible: true}
+		else if (itemBar.focus == true) {visible: true}
+		else if (itemBar.focus == false) {visible: false}
+		else if (settings.videoBackground == 0) {visible: true}
+		 else {
+		if (settings.videoBackground == 1) {visible: false}
 			}
 		}
 	}
