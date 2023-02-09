@@ -1,443 +1,284 @@
-import QtQuick 2.12
-import QtGraphicalEffects 1.0
-import QtQml.Models 2.10
+import QtQuick 2.7
 import QtQuick.Layouts 1.1
+import QtGraphicalEffects 1.15
 import "Lists"
 import "utils.js" as Utils
-import "qrc:/qmlutils" as PegasusUtils
 
 FocusScope {
-id: root
-    
-	property var currentGame
+	id: root
+	
+	property var currentItem: { if (gameAxis.model != null) {
+									if (collectionIdx == -2) {
+										return listFavorites.currentGame(gameAxis.currentIndex)
+									} else if (collectionIdx == -1) {
+										return listRecent.currentGame(gameAxis.currentIndex)
+									} else if (collectionIdx >= 0 || collectionIdx == -3) {
+										return gameAxis.model.get(gameAxis.currentIndex)
+									} else {
+										return null
+									}
+								}}	
 	property var collectionIdx
 	
-	signal exit
+	//signal settings
 	
-	onCurrentGameChanged: {
-		//detailedAxis.model = null;
-		
-		//if (currentGame != null) {
-		//	if (collectionIdx > -3) {
-		//		if (currentGame.favorite) {
-		//			detailedListModel.get(1).tile = "assets/icons/favorite.png";
-		//			detailedListModel.get(1).description = "Mark as unfavourite";
-		//		} else {
-		//			detailedListModel.get(1).tile = "assets/icons/unfavorite.png";
-		//			detailedListModel.get(1).description = "Mark as favourite";
-		//		}
-				//detailedAxis.model = detailedListModel;
-		//	} else {
-				//detailedAxis.model = settingsListModel;
-		//	}
-		//}
-		
-		
+	FontLoader { id: generalFont; source: "assets/fonts/font.ttf" }
+	ListLastPlayed  { id: listRecent; max: 10 }
+	ListFavorites { id: listFavorites; max: 10 }
+	
+	function update(l) {
+		gameAxis.model = null;
+
+		if (l == -3) {
+			gameAxis.model = itemListModel;
+		}
+		if (l == -2) {
+			gameAxis.model = listFavorites.games;
+		}
+		if (l == -1) {
+			gameAxis.model = listRecent.games;
+		}
+		if (l >= 0) {
+			gameAxis.model= api.collections.get(l).games;
+		}
 	}
 	
-    onFocusChanged: {
-		if (focus) {
-			introAnim.restart();
-		} else {
-			introAnim.stop();
-			detailed.opacity = 0;
-		} 
-    }
-	
-	ListModel {
-    id: detailedListModel
-		Component.onCompleted: {
-        append({
-            title: "Play",
-			description: "Play game",
-			tile: "assets/icons/run.png",
-            type: "setting"
-        });
-		{ if (settings.language == 0) {
-        append({
-            title: "Favourite",
-			description: "Mark as favourite",
-			tile: "assets/icons/favorite.png",
-			type: "setting"
-        });
-		} else {
-		if (settings.language == 1) {
-		append({
-			title: "Favorite",
-			description: "Mark as favorite",
-			tile: "assets/icons/favorite.png",
-			type: "setting"
-		});
-		}
-		}
-		}
-    }
-    }
-	
-	ListModel {
-    id: settingsListModel
-		Component.onCompleted: {
-        append({
-            title: "Setting 1",
-			description: "Option description",
-            tile: "assets/icons/setting.png"
-        });
-        append({
-            title: "Setting 2",
-			description: "Option description",
-            tile: "assets/icons/setting.png"
-        });
-    }
-    }
-	
-    SequentialAnimation {
-    id: introAnim
+	//onIdxCollectionChanged: {
+	//	gameAxis.model = null;
+	//	itemListModel.buildList(idxCollection);
+	//	gameAxis.model = itemListModel;
+	//}
 
-        running: false
-        //NumberAnimation { target: detailed; property: "opacity"; to: 0; duration: 100 }
-        PauseAnimation  { duration: 100 }
-        ParallelAnimation {
-            NumberAnimation { target: detailed; property: "opacity"; from: 0; to: 1; duration: 350;
-                easing.type: Easing.OutCubic;
-                easing.amplitude: 2.0;
-                easing.period: 1.5 
-            }
-            NumberAnimation { target: detailed; property: "x"; from: 50; to: 0; duration: 350;
-                easing.type: Easing.OutCubic;
-                easing.amplitude: 2.0;
-                easing.period: 1.5 
+	ListModel {
+    id: itemListModel
+		Component.onCompleted: {
+        append({
+            title: "Background",
+			description: "Default background",
+            assets: { tile: "assets/icons/background.png"}, // background: settings.background },
+			options: [
+				{ title: "xmb-wave-0", tile: "assets/icons/subsetting.png" },
+                { title: "xmb-wave-1", tile: "assets/icons/subsetting.png" },
+                { title: "xmb-wave-2", tile: "assets/icons/subsetting.png" },
+				{ title: "xmb-wave-3", tile: "assets/icons/subsetting.png" },
+				{ title: "xmb-wave-4", tile: "assets/icons/subsetting.png" },
+				{ title: "xmb-wave-5", tile: "assets/icons/subsetting.png" },
+				{ title: "xmb-wave-6", tile: "assets/icons/subsetting.png" },
+				{ title: "xmb-wave-7", tile: "assets/icons/subsetting.png" }
+            ]
+        });
+        append({
+            title: "Icon Source",
+			description: "Select icon source",
+            assets: { tile: "assets/icons/icon.png"}, // background: settings.background },
+			options: [
+                { title: "Tile", tile: "assets/icons/subsetting.png" },
+                { title: "Logo", tile: "assets/icons/subsetting.png" },
+				{ title: "Background", tile: "assets/icons/subsetting.png" },
+				{ title: "BoxFront", tile: "assets/icons/subsetting.png" }
+            ]
+        });
+		append({
+			title: "Video Background",
+			description: "Enable wave video background",
+			assets: {tile: "assets/icons/videobackground.png"}, // background: settings.background },
+			options: [
+				{ title: "Enable", tile: "assets/icons/subsetting.png" },
+				{ title: "Disable", tile: "assets/icons/subsetting.png" },
+			]
+		});
+		append({
+			title: "12/24 Hour Clock",
+			description: "Choose clock format",
+			assets: {tile: "assets/icons/clock.png"}, // background: settings.background },
+			options: [
+				{ title: "12 hour", tile: "assets/icons/subsetting.png" },
+				{ title: "24 hour", tile: "assets/icons/subsetting.png" },
+			]
+		});
+		append({
+			title: "Language",
+			description: "This option requires a restart of Pegasus",
+			assets: {tile: "assets/icons/language.png"}, // background: settings.background },
+			options: [
+				{ title: "UK English", tile: "assets/icons/ukflag.png" },
+				{ title: "US English", tile: "assets/icons/usflag.png" },
+				]
+		});
+		append({
+			title: "Battery Percentage Indicator",
+			description: "Show battery percentage indicator text",
+			assets: {tile: "assets/icons/setting.png"}, // background: settings.background },
+			options: [
+				{ title: "Enable", tile: "assets/icons/subsetting.png" },
+				{ title: "Disable", tile: "assets/icons/subsetting.png" },
+				]
+		});
+        //append({
+        //    title: "Image 3",
+		//	description: "Option description",
+        //    assets: { tile: "assets/icons/setting.png"}, // background: settings.background },
+		//	options: [
+        //         { title: "five", tile: "assets/icons/setting.png" },
+        //         { title: "six", tile: "assets/icons/setting.png" }
+        //    ]
+        //});
+    }
+    }
+
+	ListView {
+		id: gameAxis
+		//property var currentGame: model.get(currentIndex)
+
+		x: root.focus ? vpx(325) : vpx(120)
+        y: vpx(5)
+		
+		Behavior on x { NumberAnimation { duration: 200; 
+            easing.type: Easing.OutCubic;
+            easing.amplitude: 2.0;
+            easing.period: 1.5 
             }
         }
-    }
-	
-	
-	
-	Item {
-		id: detailed
-		//anchors.fill: parent
-		opacity: 0.0
 		
-		height: root.height
-		width: root.width
-		
-		ListView {
-			id: detailedAxis
-			//property var currentGame: model.get(currentIndex).game
+		height: parent.height
+		width: vpx(1024)
 
-			x: vpx(70) //root.focus ? vpx(325) : vpx(120)
-			y: vpx(5)
+		orientation: ListView.Vertical
 		
-			Behavior on x { NumberAnimation { duration: 200; 
-				easing.type: Easing.OutCubic;
-				easing.amplitude: 2.0;
-				easing.period: 1.5 
-				}
-			}
+		model: itemListModel //itemListModel.buildList(collectionBar.currentCollection.idx) //collectionBar.currentCollection.idx >= 0 ? api.collections.get(collectionBar.currentCollection.idx).games : (collectionBar.currentCollection.idx == -1 ? listRecent.games : (collectionBar.currentCollection.idx == -2 ? itemListModel : ""))
 		
-			height: parent.height
-			width: vpx(512)
-
-			orientation: ListView.Vertical
-		
-			model: collectionIdx == -3 ? currentGame.options : detailedListModel //itemListModel //itemListModel.buildList(collectionBar.currentCollection.idx) //collectionBar.currentCollection.idx >= 0 ? api.collections.get(collectionBar.currentCollection.idx).games : (collectionBar.currentCollection.idx == -1 ? listRecent.games : (collectionBar.currentCollection.idx == -2 ? itemListModel : ""))
-		
-			delegate: detailedAxisDelegate
-			spacing: vpx(10)
+        delegate: gameAxisDelegate
+        spacing: vpx(10)
 				
-			snapMode: ListView.SnapOneItem
-			highlightRangeMode: ListView.StrictlyEnforceRange
-			highlightMoveDuration : 200
-			highlightMoveVelocity : 1000
+		snapMode: ListView.SnapOneItem
+		highlightRangeMode: ListView.StrictlyEnforceRange
+		highlightMoveDuration : 200
+		highlightMoveVelocity : 1000
 				
-			preferredHighlightBegin: vpx(282)
-			preferredHighlightEnd: preferredHighlightBegin + vpx(60)// + vpx(240) // the width of one game box
+		preferredHighlightBegin: vpx(132)
+		preferredHighlightEnd: preferredHighlightBegin + vpx(60)// + vpx(240) // the width of one game box
 	
-			clip: true
-			focus: true
+		clip: true
+		focus: true
 		
+		Keys.onRightPressed: { 
+            event.accepted = true;
+			navSfx.play();
+			collectionBar.list.incrementCurrentIndex();
+			
+        }
+		Keys.onLeftPressed: { 
+            event.accepted = true;
+			navSfx.play();
+			collectionBar.list.decrementCurrentIndex(); //moveElement(-1)
+			
+        }
 		
+		Keys.onUpPressed: { 
+            event.accepted = true;
+			navSfx.play();
+			decrementCurrentIndex();
+        }
 		
+		Keys.onDownPressed: { 
+            event.accepted = true;
+			navSfx.play();
+			incrementCurrentIndex();
+        }
+		
+	}
+	
+	Component {
+        id: gameAxisDelegate
 
-			Keys.onUpPressed: { 
-				event.accepted = true;
-				navSfx.play();
-				decrementCurrentIndex();
-			}
-		
-			Keys.onDownPressed: { 
-				event.accepted = true;
-				navSfx.play();
-				incrementCurrentIndex();
-			}
-		}
-	
-		Component {
-			id: detailedAxisDelegate
+		Item {
+			property bool selected: ListView.isCurrentItem
 
-			Item {
-				property bool selected: ListView.isCurrentItem
-	
-				height: selected ? vpx(72) : vpx(32)
-				opacity: selected ? 1.0 : (root.focus ? 0.4 : 0.0)
+			height: selected ? vpx(290) : vpx(32)
+			opacity: selected ? 1.0 : (root.focus ? 0.4 : 0.0)
+			
+			RowLayout{
+				anchors.fill: parent
+				
+				Item {		
+					Layout.fillHeight: true
+					Layout.alignment: Qt.AlignLeft
 					
-				RowLayout{
-					anchors.fill: parent
-				
-				
-					Item {		
-						Layout.fillHeight: true
-						Layout.alignment: Qt.AlignLeft
-						
-						Layout.leftMargin: selected ? vpx(8) : vpx(20)
-						Layout.topMargin: selected ? vpx(5) : vpx(0)
-						Layout.bottomMargin: selected ? vpx(5) : vpx(0)
+					Layout.leftMargin: selected ? vpx(8) : vpx(20)
+					Layout.topMargin: selected ? vpx(156) : vpx(0)
+					Layout.bottomMargin: selected ? vpx(74) : vpx(0)
 
-						implicitWidth: selected ? vpx(62) : vpx(32)
-					
-						Image {
-							id: gamelisting
-							asynchronous: true
-							anchors.fill: parent
-							source: tile //"assets/icons/setting.png" //icon //modelData.assets.tile
+					implicitWidth: selected ? vpx(62) : vpx(32)
+	
+					Image {
+						asynchronous: true
+						anchors.fill: parent
+						fillMode: Image.PreserveAspectFit
+						source: { if (collectionIdx == -3 ) {
+									return assets.tile;
+								} else {
+									if (settings.iconSource == "0") return assets.tile;
+									if (settings.iconSource == "1") return assets.logo;
+									if (settings.iconSource == "2") return assets.background;
+									if (settings.iconSource == "3") return assets.boxFront;
+								}
 						}
 						
-
 					}
+				}
 				
-					ColumnLayout{
+				ColumnLayout{
 				
+					//Layout.fillHeight: true
+					//Layout.alignment: Qt.AlignLeft
+					opacity: root.focus ? 1.0 : 0.0
+					
+					Layout.leftMargin: selected ? vpx(22) : vpx(40)
+					Layout.topMargin: selected ? vpx(80) : vpx(2)
+					
+					Text {
+
+						text: title
+						color: "white"
+					
+						font.family: generalFont.name
+						font.pointSize: 22
+					}
+					
+					Text {
 						//Layout.fillHeight: true
 						//Layout.alignment: Qt.AlignLeft
-						opacity: root.focus ? 1.0 : 0.0
 					
-						Layout.leftMargin: selected ? vpx(22) : vpx(40)
-						//Layout.topMargin: selected ? vpx(80) : vpx(2)
+						//Layout.leftMargin: selected ? vpx(18) : vpx(40)
+						//Layout.topMargin: selected ? vpx(180) : vpx(2)
 					
-						Text {
-
-							text: title
-							color: "white"
+						text: collectionIdx > -3 ? ("Last Played: " + (lastPlayed == "Invalid Date" ? "Never" : Qt.formatDateTime(lastPlayed, "d/MM/yyyy hh:mm"))) : description
+						color: "white"
 					
-							font.family: generalFont.name
-							font.pointSize: 22
-						}
-					
-						Text {
-							//Layout.fillHeight: true
-							//Layout.alignment: Qt.AlignLeft
-					
-							//Layout.leftMargin: selected ? vpx(18) : vpx(40)
-							//Layout.topMargin: selected ? vpx(180) : vpx(2)
-					
-							text: collectionIdx > -3 ? description : "" //"Last Played: " + description//(modelData.lastPlayed == "Invalid Date" ? "Never" : modelData.lastPlayed)
-							color: "white"
-					
-							font.family: generalFont.name
-							font.pointSize: 12
+						font.family: generalFont.name
+						font.pointSize: 12
 						
-							visible: selected ? true : false
-						}
+						visible: selected ? true : false
 					}
 				}
 			}
-		}	
-	
-		Image {
-			id: undoIcon
-			opacity: 0.4
-			anchors {
-				left: parent.left;// leftMargin: vpx(250)
-				top: parent.top; topMargin: vpx(306)
-			}			
-		
-			height: vpx(32)
-			width: vpx(32)
-		
-			fillMode: Image.PreserveAspectFit
-		
-			source: "assets/icons/undo.png"
-			//visible: collectionIdx > -3 ? true : false
 		}
-		
-		Image {
-			anchors {
-				//left: descriptionText.left;// leftMargin: vpx(250)
-				//right: descriptionText.right;// rightMargin: vpx(50)
-				//top: parent.top; topMargin: vpx(10)
-				bottom: descriptionText.top; bottomMargin: vpx(135)
-				horizontalCenter: descriptionText.horizontalCenter
-			}			
-		
-			height: vpx(200)
-			width: vpx(500)
-		
-			fillMode: Image.PreserveAspectFit
-		
-			source: { if (collectionIdx > -3) return currentGame.assets.logo }
-			visible: collectionIdx > -3 ? true : false
-		}
-	
-	Text {
-		id: developerText
-			anchors {
-				left: parent.left; leftMargin: vpx(520)
-				right: parent.right;
-				top: parent.top; topMargin: vpx(333)
-				bottom: parent.bottom; bottomMargin: vpx(100)
-			}
-			
-			horizontalAlignment: Text.AlignLeft
-			text: "Developer:"
-			color: "silver"
-			font.family: generalFont.name
-			font.pointSize: 20
-			visible: collectionIdx > -3 ? true : false
-		}	
-	
-		Text {
-		id: devText
-			anchors {
-				left: parent.left; leftMargin: vpx(655)
-				right: parent.right;
-				top: parent.top; topMargin: vpx(333)
-				bottom: parent.bottom; bottomMargin: vpx(100)
-			}
-			
-			horizontalAlignment: Text.AlignRight
-			text: currentGame.developer
-			color: "white"
-			font.family: generalFont.name
-			font.pointSize: 20
-			visible: collectionIdx > -3 ? true : false
-		}	
-		
-		Text {
-		id: releasedinText
-			anchors {
-				left: parent.left; leftMargin: vpx(520)
-				right: parent.right;
-				top: parent.top; topMargin: vpx(363)
-				bottom: parent.bottom; bottomMargin: vpx(100)
-			}
-			
-			horizontalAlignment: Text.AlignLeft
-			text: "Released in:"
-			color: "silver"
-			font.family: generalFont.name
-			font.pointSize: 20
-			visible: collectionIdx > -3 ? true : false
-		}	
-		
-		Text {
-		id: yearText
-			anchors {
-				left: parent.left; leftMargin: vpx(670)
-				right: parent.right;
-				top: parent.top; topMargin: vpx(363)
-				bottom: parent.bottom; bottomMargin: vpx(100)
-			}
-			
-			horizontalAlignment: Text.AlignRight
-			text: currentGame.releaseYear
-			color: "white"
-			font.family: generalFont.name
-			font.pointSize: 20
-			visible: collectionIdx > -3 ? true : false
-		}
-
-		Text {
-		id: ratingText
-			anchors {
-				left: parent.left; leftMargin: vpx(520)
-				right: parent.right;
-				top: parent.top; topMargin: vpx(393)
-				bottom: parent.bottom; bottomMargin: vpx(100)
-			}
-			horizontalAlignment: Text.AlignLeft
-			text: "Rating:"
-			color: "silver"
-			font.family: generalFont.name
-			font.pointSize: 20
-			visible: collectionIdx > -3 ? true : false
-		}
-		
-		Text {
-		id: ratingpercentageText
-			anchors {
-				left: parent.left; leftMargin: vpx(670)
-				right: parent.right;
-				top: parent.top; topMargin: vpx(393)
-				bottom: parent.bottom; bottomMargin: vpx(100)
-				}
-			horizontalAlignment: Text.AlignRight
-			text: currentGame.rating.toFixed(2)*100 +"%"
-			color: "white"
-			font.family: generalFont.name
-			font.pointSize: 20
-			visible: collectionIdx > -3 ? true : false
-		}
-		
-		
-		PegasusUtils.AutoScroll {
-			id: descriptionText
-			anchors {
-					left: parent.left; leftMargin: vpx(520)
-				right: parent.right;
-				top: parent.top; topMargin: vpx(433)
-				bottom: parent.bottom; bottomMargin: vpx(40)
-			}			
-		Text {
-
-		
-			width: parent.width
-			horizontalAlignment:  Text.AlignJustify
-			text: currentGame != null ? currentGame.description : "" //"Last Played: " + description//(modelData.lastPlayed == "Invalid Date" ? "Never" : modelData.lastPlayed)
-			color: "white"
-	 
-			font.family: generalFont.name
-			font.pointSize: 14
-  
-			wrapMode: Text.WordWrap	
-	  
-			visible: collectionIdx > -3 ? true : false
-		}
-	}
- }
+    }
 	
 	Keys.onPressed: {
 			
 			if (api.keys.isAccept(event) && !event.isAutoRepeat){
 				event.accepted = true;
-				if (collectionIdx > -3 ) {
-					if (detailedAxis.currentIndex == 0) {
-						root.currentGame.launch();
-					}
-					if (detailedAxis.currentIndex == 1) {
-						root.currentGame.favorite = !root.currentGame.favorite;
-						if (root.collectionIdx == -2) exit();
+				if ( collectionIdx == -3 ) {
+					//gameDetails.focus = true;
+					//settings();
+					root.focus = false
+					navSfx.play()
+				} else {
+					root.currentItem.launch();
+					navSfx.play();
 					
-						if (root.currentGame.favorite) {
-							detailedAxis.model.get(1).tile = "assets/icons/favorite.png"
-							detailedListModel.get(1).description = "Mark as unfavorite";
-						} else {
-							detailedAxis.model.get(1).tile = "assets/icons/unfavorite.png"
-							detailedListModel.get(1).description = "Mark as favorite";
-						}
-					}
-				} else if (collectionIdx == -3 ) {
-					if (currentGame.title == "Background") api.memory.set("Background", detailedAxis.currentIndex);
-					if (currentGame.title == "Icon Source") api.memory.set("Icon Source", detailedAxis.currentIndex);
-					if (currentGame.title == "Video Background") api.memory.set("Video Background", detailedAxis.currentIndex);
-					if (currentGame.title == "12/24 Hour Clock") api.memory.set("12/24 Hour Clock", detailedAxis.currentIndex);
-					if (currentGame.title == "Language") api.memory.set("Language", detailedAxis.currentIndex);
-					if (currentGame.title == "Battery Percentage Indicator") api.memory.set("Battery Percentage Indicator", detailedAxis.currentIndex);
 				}
-				navSfx.play()
-			}
-			if (api.keys.isCancel(event)){
-				event.accepted = true;
-				backSfx.play();
-				exit();
 			}
 		}
 }
