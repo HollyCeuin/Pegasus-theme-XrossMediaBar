@@ -15,7 +15,8 @@ FocusScope {
             iconSource:             api.memory.has("Icon Source") ? api.memory.get("Icon Source") : "0",
 			videoBackground:		api.memory.has("Video Background") ? api.memory.get("Video Background") : "0",
 			hourClock:				api.memory.has("12/24 Hour Clock") ? api.memory.get("12/24 Hour Clock") : "0",
-			language:				api.memory.has("Language") ? api.memory.get("Language") : "0"
+			language:				api.memory.has("Language") ? api.memory.get("Language") : "0",
+			batteryPerc:			api.memory.has("Battery Percentage Indicator") ? api.memory.get("Battery Percentage Indicator") : "0"
         }
     }
 	
@@ -107,6 +108,7 @@ FocusScope {
 		}
 	}
     }
+	
 	Item {
 			Video {
 			id: videobg
@@ -144,8 +146,27 @@ FocusScope {
 			width: 1920
 			height: 1080
             opacity: 0.9
+			visible: { if (collectionBar.currentCollection.idx == -3) {visible: true}
+			else if	(itemBar.focus == false) {visible: false}
+			else { if (itemBar.focus == true) {visible: true}
+			}
         }
+	}
+			Image {
+			id: blurBG2
+			source: "assets/background/blurbg2.png"
+			x: 0
+			y: 0
+			width: 1920
+			height: 1080
+			opacity: 0.9
+			visible: { if (collectionBar.currentCollection.idx == -3) {visible: false}
+			else if	(itemBar.focus == true) {visible: false}
+			else { if (itemBar.focus == false) {visible: true}
+			}
 		}
+	}
+}
 	
 	Text {
 		id: currentCategory
@@ -176,11 +197,17 @@ FocusScope {
 			}
 		}
 	}
+
+			anchors.right: parent.right 
+			anchors.rightMargin: { if (settings.batteryPerc == 1) {return vpx(120)}
+			else { if (settings.batteryPerc == 0) {return vpx(180)}
+				}
+			}
+            anchors.top: parent.top
+			anchors.topMargin: vpx(28)
+
 		
-		anchors {
-			right: parent.right; rightMargin: vpx(120)
-            top: parent.top; topMargin: vpx(28)
-        }
+	
 		
         Timer {
             id: textTimer
@@ -196,6 +223,21 @@ FocusScope {
 		font.pointSize: 22
     }
 	
+	Text {
+		id: batteryPercentage
+		text: api.device.batteryPercent.toFixed(2)*100 +"%"
+		anchors {
+			right: parent.right; rightMargin: vpx(110)
+			top: parent.top; topMargin: vpx(28)
+			}
+		color: "white"
+		font.family: generalFont.name
+		font.pointSize: 22
+		visible: { if (settings.batteryPerc == 0) {return true}
+		else { if (settings.batteryPerc == 1) {return false}
+			}
+		}
+	}
 		
 	//battery
 	Item {
