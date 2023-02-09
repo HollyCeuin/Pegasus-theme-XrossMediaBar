@@ -96,7 +96,16 @@ FocusScope {
 		
 
 
-
+	visible: { if (collectionBar.currentCollection.idx == -3){
+		if (settings.videoBackground == 1) {visible: true}
+		else { if (settings.videoBackground == 0) {visible: false}
+		}
+	}
+	else if (itemBar.focus == false) {visible: true}
+	else if (settings.videoBackground == 0) {visible: false}
+	else { if(settings.videoBackground == 1) {visible: true}
+		}
+	}
     }
 	Item {
 			Video {
@@ -109,8 +118,15 @@ FocusScope {
 			autoPlay: true
 			loops: MediaPlayer.Infinite
 		}
-		visible: { if (collectionBar.currentCollection.idx == -3) {visible: true}
-		else if (itemBar.focus == true) {visible: true}
+		visible: { if (collectionBar.currentCollection.idx == -3){
+			if (settings.videoBackground == 0){
+				if (itemBar.focus == false) {visible: true}
+				}
+			else { if(settings.videoBackground == 1){
+				if (itemBar.focus == false) {visible: false}
+				}
+			}
+		}
 		else if (itemBar.focus == false) {visible: false}
 		else if (settings.videoBackground == 0) {visible: true}
 		 else {
