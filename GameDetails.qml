@@ -195,10 +195,13 @@ id: root
 						implicitWidth: selected ? vpx(62) : vpx(32)
 					
 						Image {
+							id: gamelisting
 							asynchronous: true
 							anchors.fill: parent
 							source: tile //"assets/icons/setting.png" //icon //modelData.assets.tile
 						}
+						
+
 					}
 				
 					ColumnLayout{
@@ -261,12 +264,12 @@ id: root
 				//left: descriptionText.left;// leftMargin: vpx(250)
 				//right: descriptionText.right;// rightMargin: vpx(50)
 				//top: parent.top; topMargin: vpx(10)
-				bottom: descriptionText.top; bottomMargin: vpx(5)
+				bottom: descriptionText.top; bottomMargin: vpx(135)
 				horizontalCenter: descriptionText.horizontalCenter
 			}			
 		
-			//height: vpx(96)
-			width: vpx(168)
+			height: vpx(200)
+			width: vpx(500)
 		
 			fillMode: Image.PreserveAspectFit
 		
@@ -274,27 +277,132 @@ id: root
 			visible: collectionIdx > -3 ? true : false
 		}
 	
-		Text {
-		id: descriptionText
+	Text {
+		id: developerText
 			anchors {
-					left: parent.left; leftMargin: vpx(350)
+				left: parent.left; leftMargin: vpx(520)
 				right: parent.right;
-				top: parent.top; topMargin: vpx(250)
+				top: parent.top; topMargin: vpx(333)
 				bottom: parent.bottom; bottomMargin: vpx(100)
-			}			
+			}
+			
+			horizontalAlignment: Text.AlignLeft
+			text: "Developer:"
+			color: "silver"
+			font.family: generalFont.name
+			font.pointSize: 20
+			visible: collectionIdx > -3 ? true : false
+		}	
+	
+		Text {
+		id: devText
+			anchors {
+				left: parent.left; leftMargin: vpx(655)
+				right: parent.right;
+				top: parent.top; topMargin: vpx(333)
+				bottom: parent.bottom; bottomMargin: vpx(100)
+			}
+			
+			horizontalAlignment: Text.AlignRight
+			text: currentGame.developer
+			color: "white"
+			font.family: generalFont.name
+			font.pointSize: 20
+			visible: collectionIdx > -3 ? true : false
+		}	
 		
+		Text {
+		id: releasedinText
+			anchors {
+				left: parent.left; leftMargin: vpx(520)
+				right: parent.right;
+				top: parent.top; topMargin: vpx(363)
+				bottom: parent.bottom; bottomMargin: vpx(100)
+			}
+			
+			horizontalAlignment: Text.AlignLeft
+			text: "Released in:"
+			color: "silver"
+			font.family: generalFont.name
+			font.pointSize: 20
+			visible: collectionIdx > -3 ? true : false
+		}	
+		
+		Text {
+		id: yearText
+			anchors {
+				left: parent.left; leftMargin: vpx(670)
+				right: parent.right;
+				top: parent.top; topMargin: vpx(363)
+				bottom: parent.bottom; bottomMargin: vpx(100)
+			}
+			
+			horizontalAlignment: Text.AlignRight
+			text: currentGame.releaseYear
+			color: "white"
+			font.family: generalFont.name
+			font.pointSize: 20
+			visible: collectionIdx > -3 ? true : false
+		}
+
+		Text {
+		id: ratingText
+			anchors {
+				left: parent.left; leftMargin: vpx(520)
+				right: parent.right;
+				top: parent.top; topMargin: vpx(393)
+				bottom: parent.bottom; bottomMargin: vpx(100)
+			}
+			horizontalAlignment: Text.AlignLeft
+			text: "Rating:"
+			color: "silver"
+			font.family: generalFont.name
+			font.pointSize: 20
+			visible: collectionIdx > -3 ? true : false
+		}
+		
+		Text {
+		id: ratingpercentageText
+			anchors {
+				left: parent.left; leftMargin: vpx(670)
+				right: parent.right;
+				top: parent.top; topMargin: vpx(393)
+				bottom: parent.bottom; bottomMargin: vpx(100)
+				}
+			horizontalAlignment: Text.AlignRight
+			text: currentGame.rating.toFixed(2)*100 +"%"
+			color: "white"
+			font.family: generalFont.name
+			font.pointSize: 20
+			visible: collectionIdx > -3 ? true : false
+		}
+		
+		
+		PegasusUtils.AutoScroll {
+			id: descriptionText
+			anchors {
+					left: parent.left; leftMargin: vpx(520)
+				right: parent.right;
+				top: parent.top; topMargin: vpx(433)
+				bottom: parent.bottom; bottomMargin: vpx(40)
+			}			
+		Text {
+
+		
+			width: parent.width
 			horizontalAlignment:  Text.AlignJustify
 			text: currentGame != null ? currentGame.description : "" //"Last Played: " + description//(modelData.lastPlayed == "Invalid Date" ? "Never" : modelData.lastPlayed)
 			color: "white"
-					
+	 
 			font.family: generalFont.name
-			font.pointSize: 16
-		
-			wrapMode: Text.WordWrap
-						
+			font.pointSize: 14
+  
+			wrapMode: Text.WordWrap	
+	  
 			visible: collectionIdx > -3 ? true : false
 		}
 	}
+ }
 	
 	Keys.onPressed: {
 			
@@ -322,6 +430,7 @@ id: root
 					if (currentGame.title == "Video Background") api.memory.set("Video Background", detailedAxis.currentIndex);
 					if (currentGame.title == "12/24 Hour Clock") api.memory.set("12/24 Hour Clock", detailedAxis.currentIndex);
 					if (currentGame.title == "Language") api.memory.set("Language", detailedAxis.currentIndex);
+					if (currentGame.title == "Battery Percentage Indicator") api.memory.set("Battery Percentage Indicator", detailedAxis.currentIndex);
 				}
 				navSfx.play()
 			}
