@@ -83,8 +83,8 @@ FocusScope {
 			description: "Enable wave video background",
 			assets: {tile: "assets/icons/videobackground.png"}, // background: settings.background },
 			options: [
-				{ title: "Yes", tile: "assets/icons/subsetting.png" },
-				{ title: "No", tile: "assets/icons/subsetting.png" },
+				{ title: "Enable", tile: "assets/icons/tick.png" },
+				{ title: "Disable", tile: "assets/icons/cross.png" },
 			]
 		});
 		append({
@@ -103,6 +103,15 @@ FocusScope {
 			options: [
 				{ title: "UK English", tile: "assets/icons/ukflag.png" },
 				{ title: "US English", tile: "assets/icons/usflag.png" },
+				]
+		});
+		append({
+			title: "Battery Percentage Indicator",
+			description: "Show battery percentage indicator text",
+			assets: {tile: "assets/icons/percentage.png"}, // background: settings.background },
+			options: [
+				{ title: "Enable", tile: "assets/icons/tick.png" },
+				{ title: "Disable", tile: "assets/icons/cross.png" },
 				]
 		});
         //append({
@@ -132,7 +141,7 @@ FocusScope {
         }
 		
 		height: parent.height
-		width: vpx(512)
+		width: vpx(1024)
 
 		orientation: ListView.Vertical
 		
